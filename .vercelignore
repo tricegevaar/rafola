@@ -1,0 +1,7 @@
+backend/
+backend/**/*
+*.md
+DEPLOYMENT_*.md
+deploy-setup.*
+github-commands.txt
+push-to-github.txt
