@@ -329,7 +329,12 @@ export default function AdminSettingsPage() {
   )
 }
 
-function ToggleSetting({ label, description, checked, onChange }: any) {
+function ToggleSetting({ label, description, checked, onChange }: {
+  label: string;
+  description: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
   return (
     <div className="flex items-start justify-between p-4 rounded-lg bg-gray-50">
       <div className="flex-1">
