@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_PUBLIC_API_URL = "https://rafola-backend.railway.app"
+  NEXT_PUBLIC_SOCKET_URL = "https://rafola-backend.railway.app"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  NEXT_PUBLIC_API_URL = "https://rafola-backend.railway.app"
+  NEXT_PUBLIC_SOCKET_URL = "https://rafola-backend.railway.app"

@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  name              String
+  avatar            String?
+  isAnonymous       Boolean   @default(false)
+  healingTags       String    @default("")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  sentMessages      Message[]       @relation("SentMessages")
+  receivedMessages  Message[]       @relation("ReceivedMessages")
+  groupMemberships  GroupMember[]
+  posts             Post[]
+  comments          Comment[]
+  buddyRequests     BuddyRequest[]  @relation("BuddyRequester")
+  buddyReceived     BuddyRequest[]  @relation("BuddyReceiver")
+}
+
+model Group {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  category    String
+  isPrivate   Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  members     GroupMember[]
+  posts       Post[]
+  messages    Message[]
+}
+
+model GroupMember {
+  id        String   @id @default(uuid())
+  userId    String
+  groupId   String
+  role      String   @default("member")
+  joinedAt  DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  content     String
+  senderId    String
+  recipientId String?
+  groupId     String?
+  createdAt   DateTime @default(now())
+
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User?    @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  group       Group?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  content   String
+  authorId  String
+  groupId   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  group     Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  authorId  String
+  postId    String
+  createdAt DateTime @default(now())
+
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model BuddyRequest {
+  id          String   @id @default(uuid())
+  requesterId String
+  receiverId  String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+
+  requester   User     @relation("BuddyRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  receiver    User     @relation("BuddyReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, receiverId])
+}
+
+model Resource {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  category    String
+  url         String
+  type        String
+  createdAt   DateTime @default(now())
+}
