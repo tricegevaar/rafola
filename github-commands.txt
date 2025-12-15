@@ -1,0 +1,13 @@
+Copy and paste these commands one by one in your terminal:
+
+1. Set the main branch:
+&"C:\Program Files\Git\bin\git.exe" branch -M main
+
+2. Add your GitHub repository (replace YOUR_USERNAME with your actual GitHub username):
+&"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/YOUR_USERNAME/rafola.git
+
+3. Push to GitHub:
+&"C:\Program Files\Git\bin\git.exe" push -u origin main
+
+Example if your GitHub username is "tiiso":
+&"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/tiiso/rafola.git

@@ -1,0 +1,8 @@
+Steps to push your code to GitHub:
+
+1. First, tell me your GitHub username
+2. I'll run: git remote add origin https://github.com/YOUR_USERNAME/rafola.git
+3. Then: git push -u origin main
+4. Then Vercel will automatically deploy your code
+
+Your GitHub username is needed to complete this step.
