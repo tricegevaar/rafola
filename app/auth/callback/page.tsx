@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useSocketStore } from '@/store/useSocketStore'
 import { api } from '@/lib/api'
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const login = useAuthStore(state => state.login)
@@ -38,5 +38,12 @@ export default function AuthCallbackPage() {
         <p className="text-gray-600">Completing sign in...</p>
       </div>
     </div>
+  )
+}
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <AuthCallbackContent />
+    </Suspense>
   )
 }

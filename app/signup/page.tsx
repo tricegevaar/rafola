@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { api } from '@/lib/api'
@@ -9,7 +9,7 @@ import { useSocketStore } from '@/store/useSocketStore'
 import { healingCategories } from '@/lib/utils'
 import { Heart, Mail, Lock, User, ArrowRight, Check } from 'lucide-react'
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const login = useAuthStore(state => state.login)
@@ -331,5 +331,13 @@ function PlanOption({ name, price, features, selected, onSelect, popular }: any)
         ))}
       </ul>
     </button>
+  )
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <SignupContent />
+    </Suspense>
   )
 }
